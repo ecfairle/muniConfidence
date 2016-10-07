@@ -1,0 +1,3 @@
+*.pyc
+predictions.txt
+__pycache__
