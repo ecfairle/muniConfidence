@@ -30,7 +30,7 @@ class PredictionCollecter(object):
 
 	def fname(self):
 		cur_time = time_now()
-		return 'predictions_{}-{}.pkl'.format(cur_time.day, cur_time.month)
+		return 'predictions_{}-{}.pkl'.format(cur_time.month, cur_time.day)
 
 	def run(self):
 		self.run_count += 1

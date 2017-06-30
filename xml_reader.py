@@ -5,7 +5,6 @@ import sys
 NEXTBUS_BASE_URI = 'http://webservices.nextbus.com/service/publicXMLFeed?'
 AGENCY = 'sf-muni'
 
-
 def read_xml(url):
 	xml_data = get_raw_xml(url)
 
@@ -29,6 +28,10 @@ def stop_list_url(route):
 
 def routes_list_url():
 	return '{}command=routeList&a={}'.format(NEXTBUS_BASE_URI, AGENCY)
+
+def vehicle_locations_url(route):
+	loc_url = '{}command=vehicleLocations&a={}&r={}&t=0'
+	return loc_url.format(NEXTBUS_BASE_URI,AGENCY,route)
 
 def multi_predictions_url(stop_list):
 	pred_template = '{}command=predictionsForMultiStops&a={}{}'
