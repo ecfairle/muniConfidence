@@ -18,7 +18,7 @@ def time_now():
 
 class PredictionCollecter(object):
 
-	def __init__(self, routes=['J'], run_interval_sec=60, max_runs=60 * 24 * 2):
+	def __init__(self, routes=['J'], run_interval_sec=20, max_runs=3 * 60 * 24 * 2):
 		self.run_count = 0
 		self.max_runs = max_runs
 		self.run_interval_sec = run_interval_sec

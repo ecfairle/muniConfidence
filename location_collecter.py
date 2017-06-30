@@ -46,6 +46,7 @@ class PredictionCollecter(object):
 			if tag == 'vehicle':
 				for stop in stop_data:
 					loc_data = get_xml_tags(stop)
+					loc_data['timestamp'] = timestamp
 					loc_list.append(loc_data)
 
 
