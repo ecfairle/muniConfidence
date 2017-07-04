@@ -1,6 +1,5 @@
 import threading
-import stop_loader
-import xml_reader
+from muni_api import MuniApi
 import sys
 from datetime import datetime
 from pytz import timezone
@@ -13,7 +12,6 @@ def get_xml_tags(d):
 def time_now():
 	pacific_time = timezone('US/Pacific')
 	pa_time = datetime.now(pacific_time)
-	# formatted_time = pa_time.strftime('%Y-%m-%d_%H:%M:%S')
 	return pa_time
 
 class PredictionCollecter(object):
@@ -22,8 +20,8 @@ class PredictionCollecter(object):
 		self.run_count = 0
 		self.max_runs = max_runs
 		self.run_interval_sec = run_interval_sec
-		self.stop_list = stop_loader.collect_stops(routes, False)
-		self.url = xml_reader.multi_predictions_url(self.stop_list)
+		self.muni_api = MuniApi()
+		self.routes = routes
 		self.predictions = pd.DataFrame()
 		if os.path.isfile(self.fname()):
 			self.predictions = pd.read_pickle(self.fname())
@@ -40,7 +38,7 @@ class PredictionCollecter(object):
 		self.get_stop_predictions()
 
 	def get_stop_predictions(self):
-		prediction_results = xml_reader.read_xml(self.url)
+		prediction_results = self.muni_api.get_route_predictions(self.routes)
 		timestamp = time_now()
 		pred_list = []
 		for stop in prediction_results['predictions']:

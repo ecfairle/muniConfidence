@@ -1,6 +1,5 @@
 import threading
-import stop_loader
-import xml_reader
+from muni_api import MuniApi
 import sys
 from datetime import datetime
 from pytz import timezone
@@ -13,7 +12,6 @@ def get_xml_tags(d):
 def time_now():
 	pacific_time = timezone('US/Pacific')
 	pa_time = datetime.now(pacific_time)
-	# formatted_time = pa_time.strftime('%Y-%m-%d_%H:%M:%S')
 	return pa_time
 
 class PredictionCollecter(object):
@@ -22,8 +20,9 @@ class PredictionCollecter(object):
 		self.run_count = 0
 		self.max_runs = max_runs
 		self.run_interval_sec = run_interval_sec
+		self.route = route
+		self.muni_api = MuniApi()
 		self.locations = pd.DataFrame()
-		self.url = xml_reader.vehicle_locations_url('J')
 		if os.path.isfile(self.fname()):
 			self.locations = pd.read_pickle(self.fname())
 
@@ -39,7 +38,7 @@ class PredictionCollecter(object):
 		self.get_vehicle_locations()
 
 	def get_vehicle_locations(self):
-		locations_raw = xml_reader.read_xml(self.url)
+		locations_raw = self.muni_api.get_vehicle_locations(self.route)
 		timestamp = time_now()
 		loc_list = []
 		for tag, stop_data in locations_raw.items():
