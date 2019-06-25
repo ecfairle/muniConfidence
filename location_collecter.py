@@ -24,11 +24,11 @@ class PredictionCollecter(object):
 		self.muni_api = MuniApi()
 		self.locations = pd.DataFrame()
 		if os.path.isfile(self.fname()):
-			self.locations = pd.read_pickle(self.fname())
+			self.locations = pd.read_csv(self.fname())
 
 	def fname(self):
 		cur_time = time_now()
-		return 'locations_{}-{}.pkl'.format(cur_time.month, cur_time.day)
+		return 'locations_{}-{}.csv'.format(cur_time.month, cur_time.day)
 
 	def run(self):
 		self.run_count += 1
@@ -57,7 +57,7 @@ class PredictionCollecter(object):
 		self.locations = self.locations.append(loc_list, ignore_index=True)
 		print (self.locations.tail())
 
-		self.locations.to_pickle(self.fname())
+		self.locations.to_csv(self.fname())
 
 if __name__ == '__main__':
 	p = PredictionCollecter()
