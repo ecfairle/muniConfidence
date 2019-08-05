@@ -16,9 +16,8 @@ def time_now():
 
 class PredictionCollecter(object):
 
-	def __init__(self, route='J', run_interval_sec=20, max_runs=3 * 60 * 24 * 2):
+	def __init__(self, route='J', run_interval_sec=20):
 		self.run_count = 0
-		self.max_runs = max_runs
 		self.run_interval_sec = run_interval_sec
 		self.route = route
 		self.muni_api = MuniApi()
@@ -31,9 +30,6 @@ class PredictionCollecter(object):
 		return 'locations_{}-{}.csv'.format(cur_time.month, cur_time.day)
 
 	def run(self):
-		self.run_count += 1
-		if self.run_count > self.max_runs:
-			return
 		threading.Timer(self.run_interval_sec, self.run).start()
 		self.get_vehicle_locations()
 
